@@ -43,6 +43,11 @@ fn cli(params: Params) -> anyhow::Result<()> {
                 println!("");
 
                 depth_count[depth] += sum;
+            } else if entry.file_type().is_dir() {
+                // Directory with no contents.
+                print!("{:6} ", 0);
+                stdout.write_all(&entry.path().to_raw_bytes())?;
+                println!("");
             }
 
             depth_count[depth] += 1;
