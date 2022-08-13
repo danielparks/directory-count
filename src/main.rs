@@ -33,29 +33,29 @@ fn cli(params: Params) -> Result<()> {
 }
 
 fn walk(parent: &Path) -> Result<usize> {
-    let mut count: usize = 0;
+    let mut count: usize = 1; // Count this directory.
 
     for entry in parent.read_dir()? {
-        match entry {
+        count += match entry {
             Ok(entry) => {
                 if entry.file_type()?.is_dir() {
                     match walk(&entry.path()) {
-                        Ok(dircount) => {
-                            count += dircount;
-                        }
+                        Ok(dir_count) => dir_count,
                         Err(error) => {
                             print_error(Some(&entry.path()), &error)?;
+                            1
                         }
                     }
+                } else {
+                    1
                 }
             }
             Err(error) => {
                 // FIXME should this at least show the parent path?
                 print_error(None, &error)?;
+                1
             }
         }
-
-        count += 1;
     }
 
     print!("{:6} ", count);
