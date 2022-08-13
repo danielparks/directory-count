@@ -1,6 +1,8 @@
+use anyhow::Result;
 use clap::Parser;
 use os_str_bytes::OsStrBytes;
-use std::io::{stdout, Write};
+use std::fmt::Display;
+use std::io::{stderr, stdout, Write};
 use std::path::Path;
 use std::path::PathBuf;
 use std::process::exit;
@@ -15,27 +17,42 @@ struct Params {
 
 fn main() {
     if let Err(error) = cli(Params::parse()) {
-        eprintln!("Error: {:#}", error);
+        print_error(None, &error).unwrap();
         exit(1);
     }
 }
 
-fn cli(params: Params) -> anyhow::Result<()> {
+fn cli(params: Params) -> Result<()> {
     for parent in params.directories {
-        walk(&parent)?;
+        if let Err(error) = walk(&parent) {
+            print_error(Some(&parent), &error)?;
+        }
     }
 
     Ok(())
 }
 
-fn walk(parent: &Path) -> anyhow::Result<usize> {
+fn walk(parent: &Path) -> Result<usize> {
     let mut count: usize = 0;
 
     for entry in parent.read_dir()? {
-        let entry = entry?;
-
-        if entry.file_type()?.is_dir() {
-            count += walk(&entry.path())?
+        match entry {
+            Ok(entry) => {
+                if entry.file_type()?.is_dir() {
+                    match walk(&entry.path()) {
+                        Ok(dircount) => {
+                            count += dircount;
+                        }
+                        Err(error) => {
+                            print_error(Some(&entry.path()), &error)?;
+                        }
+                    }
+                }
+            }
+            Err(error) => {
+                // FIXME should this at least show the parent path?
+                print_error(None, &error)?;
+            }
         }
 
         count += 1;
@@ -46,4 +63,19 @@ fn walk(parent: &Path) -> anyhow::Result<usize> {
     println!();
 
     Ok(count)
+}
+
+fn print_error<E>(path: Option<&Path>, error: &E) -> Result<()>
+where
+    E: Display,
+{
+    eprint!("directory-count: ");
+    if let Some(path) = path {
+        stderr().write_all(&path.to_raw_bytes())?;
+        eprintln!(": {}", error);
+    } else {
+        eprintln!("{}", error);
+    }
+
+    Ok(())
 }
