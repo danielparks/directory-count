@@ -11,7 +11,6 @@ use std::process::exit;
 #[clap(version, about)]
 struct Params {
     /// Directory to count
-    #[clap()]
     directories: Vec<PathBuf>,
 }
 
