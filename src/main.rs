@@ -1,3 +1,7 @@
+#![forbid(unsafe_code)]
+#![warn(clippy::pedantic)]
+#![allow(clippy::let_underscore_untyped, clippy::map_unwrap_or)]
+
 use anyhow::Result;
 use clap::Parser;
 use os_str_bytes::OsStrBytes;
@@ -57,7 +61,7 @@ fn walk(parent: &Path) -> Result<usize> {
         }
     }
 
-    print!("{:6} ", count);
+    print!("{count:6} ");
     stdout().write_all(&parent.to_raw_bytes())?;
     println!();
 
@@ -71,9 +75,9 @@ where
     eprint!("directory-count: ");
     if let Some(path) = path {
         stderr().write_all(&path.to_raw_bytes())?;
-        eprintln!(": {}", error);
+        eprintln!(": {error}");
     } else {
-        eprintln!("{}", error);
+        eprintln!("{error}");
     }
 
     Ok(())
