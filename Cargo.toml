@@ -5,15 +5,15 @@ authors = ["Daniel Parks <oss-directory_count@demonhorse.org>"]
 description = "Recursively count the contents of directories recursively"
 homepage = "https://github.com/danielparks/directory_count"
 repository = "https://github.com/danielparks/directory_count"
+documentation = "https://github.com/danielparks/directory_count"
 readme = "README.md"
 keywords = []
 categories = [] # https://crates.io/category_slugs
 license = "MIT OR Apache-2.0"
-edition = "2018"
-
-[badges]
+edition = "2021"
+rust-version = "1.60"
 
 [dependencies]
 anyhow = "1.0.44"
 clap = { version = "4.0.17", features = ["derive"] }
-os_str_bytes = "6.2.0"
+os_str_bytes = "6.5.0"
