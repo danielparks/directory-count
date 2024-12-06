@@ -1,3 +1,6 @@
+[graph]
+all-features = true
+
 [bans]
 multiple-versions = "allow"
 
@@ -8,9 +11,9 @@ allow = [
   "BSD-2-Clause",
   "BSD-3-Clause",
   "MIT",
+  "Unicode-3.0",
   "Unicode-DFS-2016",
   "Unlicense",
   "Zlib",
 ]
-default = "deny"
 unused-allowed-license = "allow"
