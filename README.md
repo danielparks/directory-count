@@ -24,8 +24,8 @@ instead of the size of files.
 
 ## License
 
-This project dual-licensed under the Apache 2 and MIT licenses. You may choose
-to use either.
+Unless otherwise noted, this project is dual-licensed under the Apache 2 and MIT
+licenses. You may choose to use either.
 
  * [Apache License, Version 2.0](LICENSE-APACHE)
  * [MIT license](LICENSE-MIT)
