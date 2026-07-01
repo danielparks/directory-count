@@ -14,7 +14,7 @@ edition = "2021"
 rust-version = "1.74.1"
 
 [dependencies]
-anyhow = "1.0.44"
+anyhow = "1.0.103"
 clap = { version = "4.5.23", features = ["derive"] }
 os_str_bytes = "6.5.0"
 
